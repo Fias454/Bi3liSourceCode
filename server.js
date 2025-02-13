@@ -268,7 +268,7 @@ app.post("/Search", async(req,res)=>{
         console.error(err);
     }
 });
-app.post("/SaveMarker", async(req,res)=>{w
+app.post("/SaveMarker", async(req,res)=>{
     const {productName} = req.body;
     try{
         if(productName.length <= 30){
