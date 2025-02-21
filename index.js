@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import ReactDom from "react-dom/client";
-import {Link, animateScroll as scroll} from "react-scroll";
+import Swipe from "react-swipe";
 import {BrowserRouter as Router, Routes, Route, useNavigate} from "react-router-dom";
 const root = document.getElementById("root");
 const MainRoot = ReactDom.createRoot(root);
+/*
 function HeaderLogoMain(){
     return(
         <>
-            <div className="ml-[25%] w-[50%]">
-                <img className="rounded-full w-full h-48 mt-2 border-white border-[5px]" src="./BI3li (4).svg" alt="LogoMain"></img>
+            <div className="ml-[37.5%] w-[25%]">
+                <img className="h-24 mt-1 rounded-full w" src="./BI3li (4).svg" alt="LogoMain"></img>
             </div>
         </>
     )
@@ -16,20 +17,20 @@ function HeaderLogoMain(){
 function Header(){
     return(
         <>
-            <header className="fixed top-0 left-0 w-full h-16 bg-black md:flex xl:flex flex-nowrap">
+            <header className="fixed top-0 left-0 w-full opacity-1 h-22 bg-[#101010] md:flex xl:flex flex-nowrap">
                 <HeaderLogoMain />
             </header>
         </>
     )
-}
+}*/
 //<button className="h-full text-6xl font-thin text-white basis-1/2"><i class="fa fa-search"></i></button>
 
 function FooterMainControlBtn({Naviagte}){
     return(
         <>
             <div className="flex h-full basis-1/2 flex-nowrap">
-                <button onClick={()=>Naviagte("/")} className="h-full transition-all basis-1/2 text-slate-500 hover:text-white"><i class="fa fa-home"></i></button>
-                <button onClick={()=>Naviagte("/Post")} className="h-full text-red-200 transition-all basis-1/2 bg-slate-800 hover:text-slate-500"><i class="fa fa-plus"></i></button>
+                <button onClick={()=>Naviagte("/")} className="h-full transition-all basis-1/2 text-slate-500 hover:text-slate-700"><i class="text-3xl material-symbols-outlined">home</i></button>
+                <button onClick={()=>Naviagte("/Post")} className="h-[80%] mt-[2%] text-red-200 transition-all basis-1/2 bg-black text-2xl hover:text-slate-500"><i class="fa fa-plus"></i></button>
             </div>
         </>
     )
@@ -38,9 +39,9 @@ function FooterMainControlBtn({Naviagte}){
 function FooterUtilBtn({Naviagte}){
     return(
         <>
-            <div className="flex h-full p-2 basis-1/2 flex-nowrap">
-            <button onClick={()=>Naviagte("/Search")} className="basis-1/2 h-full transition-all rounded-sm  ml-0.5 text-slate-400 font-light hover:text-white"><i className=" fa fa-search"></i></button>
-            <button onClick={()=>Naviagte("/Account")} className="basis-1/2 h-full transition-all  ml-0.5 text-slate-500 text-xl hover:text-white"><i class=" fa fa-user"></i></button>
+            <div className="flex h-full p-2 basis-1/2 flex-nowrap ">
+            <button onClick={()=>Naviagte("/Search")} className="basis-1/2 h-full transition-all rounded-sm  ml-0.5 text-slate-400 font-light hover:text-slate-700"><i className=" fa fa-search"></i></button>
+            <button onClick={()=>Naviagte("/Account")} className="basis-1/2 h-full transition-all  ml-0.5  rounded-md  text-slate-900 bg-[#d6b136] "><i class=" fa fa-user "></i></button>
             </div>
         </>
     )
@@ -49,7 +50,7 @@ function Footer({FooterDisplaySet}){
     const Naviagte = useNavigate();
     return(
         <>
-        <footer className={`${FooterDisplaySet} h-10 fixed mt-10  flex flex-nowrap bottom-0 left-0 w-full bg-gradient-to-b from-black to-slate-950`}>
+        <footer className={`${FooterDisplaySet} h-14 fixed mt-10  flex flex-nowrap bottom-0 left-0 w-full bg-black`}>
             <FooterMainControlBtn Naviagte={Naviagte}/>
             <FooterUtilBtn Naviagte={Naviagte}/>
         </footer>
@@ -62,7 +63,7 @@ async function SignUPsubmit(name,gmail,password,setNameAlert, setGmailAlert,setP
         if(name.length >4 && gmail.length >4 && password.length >4){
             const PasswordRegExCheckers = /[./;#:>?><|!"£$%^&]/;
             if(PasswordRegExCheckers.test(password)){
-                const call = await fetch("http://localhost:5000/SignUp", {
+                const call = await fetch("https://startup-3y7u.onrender.com/SignUp", {
                     method:"POST",
                     headers:{
                         "Content-Type":"application/json"
@@ -126,7 +127,7 @@ function SignUpPage(){
         <>
         <section className="w-[90%] ml-[5%] h-fit">
             <div className="w-full m-1 h-9">
-                <p className="text-2xl text-white">Make new Account:</p>
+                <p className="text-2xl text-black">Make new Account:</p>
             </div>
             <div className="w-full mb-2 text-white h-fit">
                 <input value={nameValue} onChange={(e)=>ControlSubmitForm(e, setNameValue, 15, setNameAlert, "Name cant be longer than 15 charchters")} placeholder="Name" maxLength={16} className="w-full h-11 p-2 pl-3 rounded-[30px] bg-black text-white shadow-md shadow-black  border-none outline-none"></input>
@@ -167,7 +168,7 @@ function LogInMain(){
         <>
             <section className={!pulseState? "w-[97%] ml-[1.5%] h-fit bg-gradient-to-bl p-2":"w-[97%] ml-[1.5%] h-fit bg-gradient-to-bl animate-pulse duration-1000 p-2"}>
                 <div className="w-full mb-4 h-fit">
-                    <p className="text-2xl text-white">Log in with:</p>
+                    <p className="text-2xl text-black">Log in with:</p>
                 </div>
                 <div className="w-full mb-4 h-fit">
                     <button className="w-full h-10 pl-4 mr-1 transition-all bg-white rounded-md hover:bg-slate-400 text-start hover:text-slate-900"><i className="mr-2 fa fa-envelope"></i>Log in with Google</button>
@@ -207,7 +208,7 @@ async function SubmitPost(nameValue, descriptionValue, imgValue, nameAlert, desc
         formData.append("number", number);
         formData.append("price", price);
         formData.append("category", category);
-        const call = await fetch("http://localhost:5000/SubmitProduct", {
+        const call = await fetch("https://startup-3y7u.onrender.com/SubmitProduct", {
             method:"POST",
             body: formData,
             credentials: "include"
@@ -276,14 +277,14 @@ function PostPageMain(){
                 </div>
                 <div className="flex w-full mt-3 bg-black rounded-lg h-28 flex-nowrap">
                     <div className="p-1 text-xl basis-1/2">
-                        <select className="h-full text-white bg-black scroll-smooth" onChange={(e)=>setLocation(e.target.value)}>
+                        <select className="h-full text-white bg-black scroll-smooth border-none" onChange={(e)=>setLocation(e.target.value)}>
                             {tunisianCities.map((item, index)=>(
                                 <option key={index} value={item}>{item}</option>
                             ))}
                         </select>
                     </div>
                     <div className="p-2 text-xl basis-1/2">
-                        <input value={price} onChange={(e)=>setPrice(e.target.value)} placeholder="Price..." type="number" className="h-full text-white bg-black border-none outline-none"></input>
+                        <input value={price} onChange={(e)=>setPrice(e.target.value)} placeholder="Price..." type="number" className="h-full width-full text-white bg-black border-none outline-none"></input>
                     </div>
                 </div>
                 <div className="w-full mt-3 text-white bg-black border-none rounded-lg h-fit">
@@ -296,7 +297,7 @@ function PostPageMain(){
                 </div>
                 <div className="w-full h-20 mt-3 text-white bg-black rounded-lg">
                 <div className="w-full h-full p-1 text-xl basis-1/2">
-                        <select className="w-full h-full text-white bg-black scroll-smooth" onChange={(e)=>setCategory(e.target.value)}>
+                        <select className="w-full h-full text-white bg-black scroll-smooth border-none" onChange={(e)=>setCategory(e.target.value)}>
                             {productCategories.map((item, index)=>(
                                 <option key={index} value={item}>{item}</option>
                             ))}
@@ -348,7 +349,7 @@ async function LogINSumbit(name,gmail,password,setNameAlert, setGmailAlert,setPa
         if(name.length >4 && gmail.length >4 && password.length >4){
             const PasswordRegExCheckers = /[./;#:>?><|!"£$%^&]/;
             if(PasswordRegExCheckers.test(password)){
-                const call = await fetch("http://localhost:5000/LogIn", {
+                const call = await fetch("https://startup-3y7u.onrender.com/LogIn", {
                     method:"POST",
                     headers:{
                         "Content-Type":"application/json"
@@ -395,7 +396,7 @@ function LogeInPage(){
         <>
         <section className="w-[90%] ml-[5%] h-fit">
             <div className="w-full m-1 h-9">
-                <p className="text-2xl text-white">Log in:</p>
+                <p className="text-2xl text-black">Log in:</p>
             </div>
             <div className="w-full mb-2 text-white h-fit">
                 <input value={nameValue} onChange={(e)=>ControlSubmitForm(e, setNameValue, 15, setNameAlert, "Name cant be longer than 15 charchters")} placeholder="Name" maxLength={16} className="w-full h-11 p-2 pl-3 rounded-[30px] bg-black text-white shadow-md shadow-black  border-none outline-none"></input>
@@ -424,7 +425,7 @@ function LogeInPage(){
 }
 async function NestMain(Content){
     try{
-        const call = await fetch("http://localhost:5000/NestMain",{
+        const call = await fetch("https://startup-3y7u.onrender.com/NestMain",{
             method: "GET",
             credentials: "include"
         });
@@ -438,24 +439,24 @@ async function NestMain(Content){
         console.error(err)
     }
 }
-async function ScrollForward(Content){
+async function ScrollForward(Content, url){
     try{
-        const call = await fetch("http://localhost:5000/ScrollForwardMain",{
+        const call = await fetch(`https://startup-3y7u.onrender.com/${url}`,{
             method: "GET",
             credentials: "include"
         });
         const resp = await call.json();
         if(resp.success){
-        Content([]);
+            Content([]);
             Content(resp.content);
         }
     }catch(err){
         console.error(err)
     }
 }
-async function ScrollBackward(Content){
+async function ScrollBackward(Content, url){
     try{
-        const call = await fetch("http://localhost:5000/ScrollBackward",{
+        const call = await fetch(`https://startup-3y7u.onrender.com/${url}`,{
             method: "GET",
             credentials: "include"
         });
@@ -483,12 +484,15 @@ function FeedMainSection(){
     }, []);
     return(
         <>
-            <section onDrag={(e)=>{console.log("weqwe")}}>
-                <div className="w-[90%] ml-[5%]  h-fit xl:grid xl:grid-cols-3">
+            <section className=" mb-30">
+                <div className="w-[90%] ml-[5%] h-fit xl:grid xl:grid-cols-3">
+                <div className="mb-3 text-5xl text-black">
+                    <p>Find New:</p>
+                </div>
                    {nestMain.map((item,index)=>(
                          <div onClick={()=>SaveProductMain(item.productName, naviagte)}  key={index} className="w-full p-2 mb-6 bg-slate-900 h-fit">
                          <div className="w-full h-40">
-                             <img className="object-cover w-full h-full" src={"http://localhost:5000/"+item.productImg} alt=""></img>
+                             <img className="object-cover w-full h-full" src={"https://startup-3y7u.onrender.com/"+item.productImg} alt=""></img>
                          </div>
                          <div className="w-full h-9">
                              <p className="mt-2 text-2xl text-center text-white">{item.productName}</p>
@@ -499,9 +503,9 @@ function FeedMainSection(){
                      </div> 
                    ))}
                 </div>
-                <div className={nestMain.length<=0? "hidden":"pb-5 w-[90%] ml-[5%] flex flex-nowrap h-20"}>
-                    <button onClick={()=>ScrollBackward(setNestMain)} className={"h-full text-4xl basis-1/2 text-white"}><i className="fa fa-arrow-circle-left"></i></button>
-                    <button onClick={()=>ScrollForward(setNestMain)} className={"h-full text-4xl basis-1/2 text-white"}><i className="fa fa-arrow-circle-right"></i></button>
+                <div className={nestMain.length<=0? "hidden":"pb-10 mb-20 w-[90%] ml-[5%] flex flex-nowrap h-20"}>
+                    <button onClick={()=>ScrollBackward(setNestMain, "ScrollForwardMain")} className={"h-full text-4xl basis-1/2 text-white"}><i className="fa fa-arrow-circle-left"></i></button>
+                    <button onClick={()=>ScrollForward(setNestMain, "ScrollBackward")} className={"h-full text-4xl basis-1/2 text-white"}><i className="fa fa-arrow-circle-right"></i></button>
                 </div>
             </section>
         </>
@@ -509,7 +513,7 @@ function FeedMainSection(){
 }
 async function SaveProductMain(productName, navigate){
     if(productName !==""){
-        const call = await fetch("http://localhost:5000/SaveMarker", {
+        const call = await fetch("https://startup-3y7u.onrender.com/SaveMarker", {
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
@@ -542,7 +546,7 @@ function FeedMainPage(){
 async function Search(setsearchResult,e){
     const searchValue = e.target.value;
     if(searchValue){
-        const call = await fetch("http://localhost:5000/Search", {
+        const call = await fetch("https://startup-3y7u.onrender.com/Search", {
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
@@ -564,7 +568,7 @@ function SearchPage(){
     const naviagte = useNavigate();
     return(
         <>
-            <section className="w-[90%] ml-[5%] text-white h-fit">
+            <section className="w-[90%] ml-[5%] text-black h-fit">
                 <div className="w-full p-2 m-2 bg-black rounded-md h-11">
                     <span className="h-full w-[5%] mr-3"><i className="fa fa-search"></i></span>
                     <input onChange={(e)=>Search(setsearchResult, e)} className="w-[90%] h-full bg-black outline-none border-none" placeholder="Search..."></input>
@@ -573,7 +577,7 @@ function SearchPage(){
                     {searchResult.map((item,index)=>(
                         <div onClick={()=>SaveProductMain(item.productName, naviagte)} key={index}>
                             <div placeholder="w-full inline h-32 mt-3 p-2 flex bg-black flex-nowrap">
-                               <img className="inline-block w-1/2 h-full p-2" src={"http://localhost:5000/"+item.productImg}></img><p className="inline-block text-center">{item.productName}</p>
+                               <img className="inline-block w-1/2 h-full p-2" src={"https://startup-3y7u.onrender.com/"+item.productImg} alt="resImg"></img><p className="inline-block text-center">{item.productName}</p>
                             </div>
                         </div>
                     ))}
@@ -584,16 +588,123 @@ function SearchPage(){
         </>
     )
 }
+async function NestBasedCat(type, navigate){
+    try{
+        if(type !==""){
+            const call = await fetch("https://startup-3y7u.onrender.com/SaveCatMarker", {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body: JSON.stringify({type}),
+                credentials: "include"
+            });
+            const resp = await call.json();
+            if(resp.success){
+                navigate("/Category");
+            }else{
+                console.error("internal failure");
+            }
+        }
+    }catch(err){
+        console.error(err);
+    }
+}
+function ProductSection(){
+    const navigate = useNavigate();
+    const swipRef = useRef(null);
+    const swipeOption = {
+        continous: true,
+        disableScroll: true,
+        stopPropagation: true,
+        passive: true
+    };
+    return(
+        <>
+        <section  className="mb-5 h-fit w-[90%] ml-[5%]">
+            <div className="mb-3 text-5xl text-black">
+                <p>Descover:</p>
+            </div>
+            <Swipe {...swipeOption}>
+                <div className="flex flex-nowrap">
+                    <button onClick={()=>NestBasedCat("Electronics", navigate)} className="text-white text-8xl basis-1/3">🖥️<p className="text-2xl">Electronics</p></button>
+                    <button onClick={()=>NestBasedCat("Clothing", navigate)}  className="text-8xl ml-[30%] basis-1/3 text-white">👕<p className="text-2xl">Clothing</p></button>
+                </div>
+                <div className="flex flex-nowrap">
+                    <button onClick={()=>NestBasedCat("Furniture", navigate)}  className="text-white text-8xl basis-1/3">🪑<p className="text-2xl">Furniture</p></button>
+                    <button onClick={()=>NestBasedCat("Books", navigate)}  className="text-8xl ml-[30%] basis-1/3 text-white">📚<p className="text-2xl">Books</p></button>
+                </div>
+                <div className="flex flex-nowrap">
+                    <button onClick={()=>NestBasedCat("Automotive", navigate)}  className="text-white text-8xl basis-1/3">🚗<p className="text-2xl">Automotive</p></button>
+                    <button onClick={()=>NestBasedCat("Health & Wellness", navigate)}  className="text-8xl ml-[30%] basis-1/3 text-white">🏋️‍♀️<p className="text-2xl">Health  Wellness</p></button>
+                </div>
+            </Swipe>
+            
+        </section>
+        </>
+    )
+}
+async function NestRecent(setNestRecent){
+    try{
+        setNestRecent([]);
+        const call = await fetch("https://startup-3y7u.onrender.com/NestRecent",{
+            method:"GET",
+        });
+        const resp = await call.json();
+        if(resp.success){
+            setNestRecent(resp.content);
+        }else{
+            console.error("Fatal error");
+        }
+    }catch(err){
+        console.error(err);
+    }
+}
+function RecentSection(){
+    const naviagte = useNavigate();
+    const [nestMain, setNestMain] = useState([]);
+    useEffect(()=>{
+        NestRecent(setNestMain);
+    }, []);
+    return(
+        <>
+
+            <section>
+            <div className="mb-3 text-5xl text-black">
+                <p>Recent:</p>
+            </div>
+                <div className="w-[90%] ml-[5%]  h-fit xl:grid xl:grid-cols-3">
+                   {nestMain.map((item,index)=>(
+                         <div onClick={()=>SaveProductMain(item.productName, naviagte)}  key={index} className="w-full p-2 mb-6 bg-slate-900 h-fit">
+                         <div className="w-full h-40">
+                             <img className="object-cover w-full h-full" src={"https://startup-3y7u.onrender.com/"+item.productImg} alt=""></img>
+                         </div>
+                         <div className="w-full h-9">
+                             <p className="mt-2 text-2xl text-center text-white">{item.productName}</p>
+                         </div>
+                         <div className="w-full h-9">
+                             <p className="mt-2 text-lg text-center"><i className="fa fa-map-marker ml-[1%] text-red-500 mr-[2%]"></i><span className="w-full text-white">{item.productLocation}</span></p>
+                         </div>
+                     </div> 
+                   ))}
+                </div>
+               
+            </section>
+        </>
+    )
+}
 function MainBrowserPage(){
     return(
         <>
+        <ProductSection/>
+        <RecentSection/>
         <FeedMainPage/>
         </>
     )
 }
 async function NestProductPage(setProduct){
     try{
-            const call = await fetch("http://localhost:5000/NestProductPage", {
+            const call = await fetch("https://startup-3y7u.onrender.com/NestProductPage", {
                 method:"GET",
                 credentials: "include"
             });
@@ -609,15 +720,17 @@ async function NestProductPage(setProduct){
 }
 function ProductPageSection(){
     const [product, setProduct] = useState([]);
+    const swipRef = useRef(null);
+   
     useEffect(()=>{
         NestProductPage(setProduct);
     },[]);
     return(
         <>
-            <section className="w-[90%] ml-[5%] h-fit text-2xl text-white">
+            <section className="w-[90%] ml-[5%] h-fit text-2xl text-black">
                {product.map((item,index)=>(
                  <div key={index}><div  className="w-full p-2 h-fit">
-                       <img src={"http://localhost:5000/"+item.productImg}></img>
+                       <img src={"https://startup-3y7u.onrender.com/"+item.productImg}></img>
                        <div className="flex mt-4 text-white h-fit flex-nowrap">
                            <span className="basis-1/2"><p className="text-white">Price:{item.productPrice}</p></span>
                            <span className="flex basis-1/2 flex-nowrap"><i className="fa fa-map-marker basis-1/6"></i><p className="basis-5/6">{item.productLocation}</p></span>
@@ -630,7 +743,7 @@ function ProductPageSection(){
                                <div className="text-white"><p>{item.productDescription}</p></div>
                            </div>
                        </div><div className="w-full mt-5 h-fit">
-                        {item.productFacebookLink? <p>{item.productFacebookLink}</p>:""}
+                        {item.productFacebookLink? <p>{item.productType}</p>:""}
                         {item.productInstaLink? <p>{item.productInstaLink}</p>:""}
                         {item.productWhatsUpLink? <p>{item.productWhatsUpLink}</p>:""}
                         {item.productCellPhoneNumber? <p>{item.productCellPhoneNumber}</p>:""}
@@ -640,13 +753,65 @@ function ProductPageSection(){
         </>
     )
 }
+async function NestCategory(setNestMain){
+    try{
+        setNestMain([]);
+        const call = await fetch("https://startup-3y7u.onrender.com/NestCategory", {
+            method:"GET",
+            credentials: "include"
+        });
+        const resp = await call.json();
+        if(resp.success){
+            setNestMain([resp.content])
+        }else{
+            console.error("internal error");
+        }
+    }catch(err){
+        console.error(err);
+    }
+}
+function CategorySection(){
+    const navigate = useNavigate();
+    const [nestMain, setNestMain] = useState([]);
+
+    useEffect(()=>{
+        NestCategory(setNestMain);
+    }, []);
+    return(
+        <>
+            <section className="w-full h-fit">
+                <div className="w-[90%] ml-[5%]  h-fit xl:grid xl:grid-cols-3">
+                  {nestMain.map((item,index)=>(
+                  <div key={index}  className="w-full p-2 mb-6 bg-slate-900 h-fit">
+                         <div onClick={()=>SaveProductMain(item.productName, navigate)} className="w-full p-2 mb-6 bg-slate-900 h-fit">
+                         <div className="w-full h-40">
+                             <img className="object-cover w-full h-full" src={"https://startup-3y7u.onrender.com/"+item.productImg} alt=""></img>
+                         </div>
+                         <div className="w-full h-9">
+                             <p className="mt-2 text-2xl text-center text-white">{item.productName}</p>
+                         </div>
+                         <div className="w-full h-9">
+                             <p className="mt-2 text-lg text-center"><i className="fa fa-map-marker ml-[1%] text-red-500 mr-[2%]"></i><span className="w-full text-white">{item.productLocation}</span></p>
+                         </div>
+                     </div> 
+                  </div>
+                   ))}
+                <div className={nestMain.length<=0? "hidden":"pb-5 w-[90%] ml-[5%] flex flex-nowrap h-20"}>
+                    <button onClick={()=>ScrollBackward(setNestMain ,"CategoryBackWards")} className={"h-full text-4xl basis-1/2 text-white"}><i className="fa fa-arrow-circle-left"></i></button>
+                    <button onClick={()=>ScrollForward(setNestMain, "CategoryForwards")} className={"h-full text-4xl basis-1/2 text-white"}><i className="fa fa-arrow-circle-right"></i></button>
+                </div>
+                </div>
+            </section>
+        </>
+    )
+}
+/* */
 function Main(){
     return(
         <>
         <main className="w-full h-full">
         <Router>
-        <Header/>
-        <main className="mt-64 mb-36 w-100vh">
+        <main className="mt-10 pb-1 w-100vh">
                 <Routes>
                     <Route path="/" element={<MainBrowserPage/>}/>
                     <Route path="/Account" element={<MainAccountPage/>}/>
@@ -655,6 +820,7 @@ function Main(){
                     <Route path="/LogIn" element={<LogeInPage/>}/>
                     <Route path="/Search" element={<SearchPage/>}/>
                     <Route path="/ProductPage" element={<ProductPageSection/>}/>
+                    <Route path="/Category" element={<CategorySection/>}/>
                 </Routes>
         </main>
         <Footer FooterDisplaySet={"sm:block md:block xl:hidden"}/>

@@ -19,7 +19,7 @@ fs.mkdir(folderPath, { recursive: true }, (err) => {
         console.log("Folder created successfully!");
     }
 });
-mongoose.connect("mongodb+srv://SaifControl25725839SaifControl:xyXrJQwVvA2IrUuV@testbeta1-2.5qxhu.mongodb.net/?retryWrites=true&w=majority&appName=TestBeta1-2")
+mongoose.connect("mongodb://localhost:27017/WhateverTheFuckTHisIS")
 .then(()=>console.log("Mongodb connected")).catch((err)=>console.error(err));
 //
 function SecretGen(){
@@ -29,7 +29,9 @@ function SecretGen(){
 }
 app.use(express.json());
 app.use(cors({
-    credentials: "include"
+    origin: "http://localhost:3000",
+    methods: ["GET", "POS"],
+    credentials: true
 }));
 app.use(session({
     secret:SecretGen(),
@@ -296,6 +298,98 @@ app.get("/NestProductPage", async(req,res)=>{
         }
     }catch(err){
         console.error(err);
+    }
+});
+app.get("/NestRecent", async(req,res)=>{
+    try{
+        const content = await product.find().limit(10);
+        if(content.length >=0){
+            res.json({success:true, content: content});
+        }else{
+            res.json({success:false});
+        }
+    }catch(err){
+        res.json({success:false});
+        console.error(err);
+    }
+});
+app.post("/SaveCatMarker", async(req,res)=>{
+    const {type} = req.body;
+    try{
+        if(type!==""){
+            const isProduct = await product.findOne({productType: type});
+            if(isProduct){
+                req.session.productType = type;
+                res.json({success:true});
+            }else{
+                res.json({success:false});
+            }
+        }else{
+            res.json({success:false});
+        }
+    }catch(err){
+        console.error(err);
+    }
+});
+app.get("/NestCategory", async(req,res)=>{
+    try{
+        if(!req.session.currentScroll){
+            req.session.currentScroll = 0;
+        }
+        if(req.session.productType){
+            const content = await product.findOne({productType:req.session.productType}).limit(6);
+            if(content){
+                req.session.currentScroll = 6;
+                res.json({success:true, content:content});
+            }else{
+                res.json({success:false});
+            }
+        }
+    }catch(err){
+        console.error(err);
+    }
+});
+app.get("/CategoryForwards", async(req,res)=>{
+    try{
+        if(req.session.currentScroll && req.session.productType){
+            if(req.session.currentScroll <6){
+                req.session.currentScroll=+6;
+            }else{
+                req.session.currentScroll=0;
+            }
+            const content = await product.findOne({productType:req.session.productType}).skip(req.session.currentScroll).limit(6);
+            if(content){
+                res.json({success:true, content: content});
+            }else{
+                res.json({success:false});
+            }
+        }else{
+            res.json({success:false});
+        }
+    }catch(err){
+        console.error(err)
+    }
+});
+app.get("/CategoryBackWards", async(req,res)=>{
+    try{
+        if(req.session.currentScroll && req.session.productType){
+                if(req.session.currentScroll >6){
+                    req.session.currentScroll=-6;
+                }else{
+                    req.session.currentScroll=0;
+                }
+                const content = await product.findOne({productType:req.session.productType}).sort({_id:-1}).limit(6);
+                if(content){
+                    res.json({success:true, content: content});
+                }else{
+                    res.json({success:false});
+                }
+            
+        }else{
+            res.json({success:false});
+        }
+    }catch(err){
+        console.error(err)
     }
 });
 app.use("/Files/", express.static(path.join(__dirname, "/Files/")));
